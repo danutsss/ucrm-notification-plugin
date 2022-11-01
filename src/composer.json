@@ -1,6 +1,20 @@
 {
-    "require": {
-        "php": ">=7.1",
-        "ubnt/ucrm-plugin-sdk": "~0.4"
-    }
+	"autoload": {
+		"psr-4": {
+			"ContractExpire\\": [
+				"src/"
+			]
+		}
+	},
+	"require": {
+		"php": ">=7.1",
+		"ubnt/ucrm-plugin-sdk": "~0.4",
+		"psr/log": "^1.1",
+		"php-di/php-di": "^6.3"
+	},
+	"config": {
+		"platform": {
+			"php": "7.3"
+		}
+	}
 }
