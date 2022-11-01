@@ -1,0 +1,19 @@
+{
+	"version": "1",
+	"information": {
+		"name": "ucrm-notification-plugin",
+		"displayName": "UCRM Contract Expire Notification",
+		"description": "UCRM plugin that notifies you when client’s signed contract is expiring.",
+		"url": "https://github.com/danutsss/ucrm-notification-plugin",
+		"version": "1.0.0",
+		"ucrmVersionCompliancy": {
+			"min": "2.14.0",
+			"max": null
+		},
+		"unmsVersionCompliancy": {
+			"min": "1.0.0-alpha.1",
+			"max": null
+		},
+		"author": "Matei Nicolae - Daniel"
+	}
+}
