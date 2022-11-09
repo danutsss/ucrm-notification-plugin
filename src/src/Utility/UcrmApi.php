@@ -6,7 +6,7 @@ require_once __DIR__ . "/../../vendor/autoload.php";
 
 class UcrmApi
 {
-    const API_URL = 'https://uisp.07internet.ro/api/v1.0';
+    const API_URL = 'https://uisp.07internet.ro/crm/api/v1.0';
     const API_KEY = 'HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH';
 
     /**
