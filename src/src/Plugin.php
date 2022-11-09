@@ -58,14 +58,17 @@ class Plugin
             foreach ($clients as $client) {
                 $client = $ucrmApi->doRequest(sprintf('clients/%s', $client['id']));
 
-                // Parse the attributes to an ID <=> value array.
-                $attributes = [];
-                foreach ($client['attributes'] as $attribute) {
-                    $attributes[$attribute['id']] = $attribute['value'];
+                // Get client's custom fields.
+                $customFields = $client['attributes'];
+
+                foreach ($customFields as $customField) {
+                    if ($customField['key'] === 'nextContractSign') {
+                        $contractExpirationDate = $customField['value'];
+                    }
                 }
 
                 // Check if the client has a contract end date.
-                if (!isset($attributes[157])) {
+                if (!isset($contractExpirationDate)) {
                     $this->logger->log(LogLevel::INFO, sprintf('Client %s has no contract end date. (%s)', $client['id'], (new \DateTimeImmutable())->format('Y-m-d H:i:s')), [
                         'plugin' => 'contract-expire',
                     ]);
@@ -76,7 +79,7 @@ class Plugin
                 }
 
                 // Get the contract end date and current date.
-                $contractEndDate = new \DateTime($attributes[157]);
+                $contractEndDate = new \DateTime($contractExpirationDate);
                 $currentDate = new \DateTime();
 
                 // Get the user's e-mail address from contacts.
@@ -96,7 +99,7 @@ class Plugin
                 // Check if the contract is about to expire in 30, 14 and <= 7 days.
                 else if ($contractEndDate->diff($currentDate)->days === 30 || $contractEndDate->diff($currentDate)->days === 14 || $contractEndDate->diff($currentDate)->days <= 7) {
                     // Send an email to the client.
-                    $this->sendMail($client['id'], $email);
+                    $this->sendMail($client['id'], $email, $contractEndDate->format('Y-m-d'));
                 }
             }
         } catch (\Exception $e) {
@@ -109,14 +112,14 @@ class Plugin
         ]);
     }
 
-    private function sendMail(int $clientId, string $email): void
+    private function sendMail(int $clientId, string $email, string $date): void
     {
         try {
             $ucrmApi = new UcrmApi();
             $ucrmApi->doRequest('email/1/enqueue', 'POST', [
                 'to' => $email,
                 'subject' => 'Contractul dumneavoastra va expira in curand!',
-                'body' => 'Contractul dumneavoastra va expira in curand! Va rugam sa il resemnati cat mai repede posibil.',
+                'body' => 'Contractul dumneavoastra va expira pe data de ' . $date . '! Va rugam sa il resemnati cat mai repede posibil.',
                 'clientId' => $clientId,
             ]);
 
