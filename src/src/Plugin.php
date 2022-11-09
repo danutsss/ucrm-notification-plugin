@@ -90,14 +90,11 @@ class Plugin
                     }
                 }
 
-                // Check if the contract has expired.
+                // Check if the contract has expired or if the contract is about to expire in 30, 14 and <= 7 days..
                 if ($contractEndDate < $currentDate) {
                     // Send e-mail to the user.
                     $this->contractExpired($client['id'], $email, $contractEndDate->format('Y-m-d'));
-                }
-
-                // Check if the contract is about to expire in 30, 14 and <= 7 days.
-                else if ($contractEndDate->diff($currentDate)->days === 30 || $contractEndDate->diff($currentDate)->days === 14 || $contractEndDate->diff($currentDate)->days <= 7) {
+                } else if ($contractEndDate->diff($currentDate)->days === 30 || $contractEndDate->diff($currentDate)->days === 14 || $contractEndDate->diff($currentDate)->days <= 7) {
                     // Send an email to the client.
                     $this->sendMail($client['id'], $email, $contractEndDate->format('Y-m-d'));
                 }
