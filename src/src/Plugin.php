@@ -62,7 +62,7 @@ class Plugin
                 $customFields = $client['attributes'];
 
                 foreach ($customFields as $customField) {
-                    if ($customField['key'] === 'nextContractSign') {
+                    if ($customField['key'] === 'nextcontractsign') {
                         $contractExpirationDate = $customField['value'];
                     } else if ($customField['key'] === 'cnp') {
                         $cnp = $customField['value'];
